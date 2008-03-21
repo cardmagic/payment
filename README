@@ -1,0 +1,71 @@
+== Welcome to Payment
+
+Payment is used to process credit cards and electronic cash through merchant accounts.
+
+To choose a gateway, require 'payment/gateway_name'. For example, if you want to use Authorize.net, do a require 'payment/authorize_net'. If you would like to use multiple gateways in the same code, simply do a require 'payment' and it will grab each gateway's code for you.
+
+Payment was inspired by and has borrowed much of its infrastructure from the Business::OnlinePayment Perl module (http://search.cpan.org/~jasonk/Business-OnlinePayment-2.01/OnlinePayment.pm).
+
+If you would like to loosely check the validity of a credit card without using a merchant account, look at the CreditCard module (http://rubyforge.org/projects/creditcard/).
+
+== Example
+
+    require 'payment/authorize_net'
+
+    transaction = Payment::AuthorizeNet.new (
+                      :login       => 'username',
+                      :password    => 'password',
+                      :amount      => '49.95',
+                      :card_number => '4012888818888',
+                      :expiration  => '03/10',
+                      :first_name  => 'John',
+                      :last_name   => 'Doe'
+                     )
+    begin
+      transaction.submit
+      puts "Card processed successfully: #{transaction.authorization}"
+    rescue
+      puts "Card was rejected: #{transaction.error_message}"
+    end
+
+To set default values, setup a file called .payment.yml in the home directory of the user who will be using this library. An example file would be:
+
+    username: my_account
+    transaction_key: my_trans_key
+
+That way there is no need to keep sensitive information in your application's code itself. To specify an alternative configuration file, add a :prefs => '/path/to/file.yml' to the initialization parameters.
+        
+== Currently Supported Gateways
+
+* Authorize.Net (authorize_net) - http://www.authorize.net
+
+== Upcoming Gateways
+
+* Moneris - http://www.moneris.com
+* Skipjack - http://www.skipjack.com
+
+== Planned Support for the Following Gateways
+
+* Trust Commerce - http://www.trustcommerce.com
+* Verisign Payflow Pro - http://www.verisign.com
+* Cardstream - http://www.cardstream.com
+* Beanstream - http://www.beanstream.com
+* Vital - http://www.vitalps.com
+* Merchant Commerce - http://www.innuity.com
+* iAuthorizer - http://www.iauthorizer.com
+* Electronic Clearing House, Inc. - http://www.echo-inc.com
+* Bank of America eStores - http://www.bankofamerica.com
+* Network1Financial - http://www.eftsecure.com
+* eSec - http://www.esecpayments.com.au
+* Ingenico OCV - http://www.ingenico.com.au
+* St.George IPG - https://www.ipg.stgeorge.com.au
+* Jettis - http://www.jettis.com
+* PaymentsGateway.Net - http://www.paymentsgateway.net
+* PayConnect - http://www.paymentone.com
+* Secure Hosting UPG - http://www.securehosting.com
+
+== About
+
+Author::    Lucas Carlson  (mailto:lucas@rufy.com)
+Copyright:: Copyright (c) 2005 Lucas Carlson
+License::   Distributes under the same terms as Ruby
